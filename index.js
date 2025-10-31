@@ -3,12 +3,20 @@ import express from "express";
 const app = express();
 
 app.use((req, res, next) => {
-   res.json({message: "Hola Middleware"});
+    //res.json({message: "Hola API en Mantenimiento"});
+    console.log(req.method)
+        next();
 });
 
 app.get("/", (req, res) => {
-    res.send("bienvenidos a nuestra Api Rest!");
+    res.json({ message: "bienvenidos a nuestra Api Rest!" });
 });
+
+
+import notFound from "./src/middlewares/not found.js";
+
+
+app.use(notFound);
 
 
 const PORT = 3000;
