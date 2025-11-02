@@ -2,7 +2,7 @@ import express from "express";
 
 const app = express();
 
-const products = [{
+/*const products = [{
     id: 1,
     name: "Camiseta Deportiva",
     price: 150,
@@ -31,7 +31,7 @@ const products = [{
     name: "Botella Termica",
     price: 220,
     categories: ["Hogar", "accesorios"],
-}];
+}]; */
 
 
 
@@ -46,9 +46,12 @@ app.get("/", (req, res) => {
     res.json({ message: "bienvenidos a nuestra Api Rest!" });
 });
 
+import productsRouter from "./src/routes/products.router.js";
+
+
 // rutas metodo get
 
-app.get("/products", (req, res) => {
+/*app.get("/products", (req, res) => {
 
     const { category } = req.query;
 
@@ -73,14 +76,14 @@ app.get("/products/search", (req, res) => {
         return res.status(400).json({ error: " El nombre es requerido" });
     }
     
-    const productsFiltered = products.filter((item) =>
-        item.name.toLowerCase().includes(name.toLowerCase())
+    const productsFiltered = products.filter((item) => item.name.toLowerCase().includes(name.toLowerCase())
     );
 
     if (!productsFiltered) {
 
         return res.status(404).json({ error: " No se econtraron Productos" });
     }
+    res.json(productsFiltered);
 });
 
 
@@ -98,10 +101,11 @@ app.get("/products/:id", (req, res) => {
 
     res.json(product);
 });
-// --------
+// --------*/
 
 
 import notFound from "./src/middlewares/not found.js";
+app.use('/api',productsRouter);
 
 app.use(notFound);
 
