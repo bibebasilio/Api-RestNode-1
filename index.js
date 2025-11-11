@@ -1,9 +1,11 @@
+import "dotenv/config";
+
 import express from "express";
 
 const app = express();
 
-/*const products = [{
-    id: 1,
+//const products = [{
+ /*   id: 1,
     name: "Camiseta Deportiva",
     price: 150,
     categories: ["ropa", "deportiva"],
@@ -33,11 +35,15 @@ const app = express();
     categories: ["Hogar", "accesorios"],
 }]; */
 
+// esto es un middleware para parsear json
+app.use(express.json());
+
+// middleware de mantenimiento
 
 
 
 app.use((req, res, next) => {
-    //res.json({message: "Hola API en Mantenimiento"});
+ //   /* res.json({message: "Hola API en Mantenimiento"});*/
     console.log(req.method)
         next();
 });
@@ -47,13 +53,13 @@ app.get("/", (req, res) => {
 });
 
 import productsRouter from "./src/routes/products.router.js";
-
+app.use('/api',productsRouter);
 
 // rutas metodo get
 
-/*app.get("/products", (req, res) => {
+/*app.get("/products", (req, res) => {*/
 
-    const { category } = req.query;
+/*    const { category } = req.query;
 
     if (category) {
         const productsFiltered = products.filter((item) =>
@@ -105,11 +111,9 @@ app.get("/products/:id", (req, res) => {
 
 
 import notFound from "./src/middlewares/not found.js";
-app.use('/api',productsRouter);
-
 app.use(notFound);
 
-
-const PORT = 3000;
+/// aagrego puerto desde .env   y uso 3001 x si 3000 esta ocupado
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
