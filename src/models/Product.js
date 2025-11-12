@@ -53,7 +53,7 @@ export const getAllProducts = async () => {
 
 
 // /*export const getAllProducts = () => {
-    return products;
+ //   return products;
 // };*/
 
 // vamos a traer desde la base de datos x su id
