@@ -1,65 +1,21 @@
-const products = [{ // se trajo index.js provisoriamente
-id: 1,
-name: "Camiseta Deportiva",
-price: 150,
-categories: ["ropa", "deportiva"],
-},
-{
-id: 2,
-name: "Zapatos Running",
-price: 1200,
-categories: ["calzado", "deportes"]
-},
-{
-id: 3,
-name: "Mochila Escolar",
-price: 800,
-categories: ["mochilas", "escolar"],
-},
-{
-id: 4,
-name: "Auriculares Bluetooth",
-price: 800,
-categories: ["tecnologia", "audio"],
-},
-{
-id: 5,
-name: "Botella Termica",
-price: 220,
-categories: ["Hogar", "accesorios"],
-    }];
+
 ///  esto es para instalas firebase
 
 import { db } from "./firebase.js";
 
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, deleteDoc, setDoc, updateDoc, query, where} from "firebase/firestore";
 
 const productsCollection = collection(db, "products");
 
 export const getAllProducts = async () => {
     try {
-    
-        const snapshot = await getDocs(productsCollection);
-     ////     //snapshot.forEach((doc) => {
-        //     console.log(doc.id, "=>", doc.data());
-        // });
-        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+       const snapshot = await getDocs(productsCollection);
+       return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
         console.error("Error al obtener los documentos: ", error);
     }
 };    
 
-
-
-
-// /*export const getAllProducts = () => {
-    return products;
-// };*/
-
-// vamos a traer desde la base de datos x su id
-/*export const getProductById = (id) => {
-    return products.find((item) => item.id == id);
-};*/
 export const getProductById = async (id) => {
     try {
         const productRef = doc(productsCollection, id); 
@@ -70,8 +26,90 @@ export const getProductById = async (id) => {
         throw error;
     }       
 };
+//// para filtrar productos por categoria
+export const getProductsByCategory = async (category) => {
+    try {
+        const q = query(productsCollection, where("categories", "array-contains", category));
 
-export const createProduct = (data) => {
-    console.log(data);
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    } catch (error) {
+        console.error("Error al obtener los documentos: ", error);
+        throw error;
+    }
+};
+
+
+
+
+export const createProduct = async(data) => {
+try {
+    const docRef = await addDoc(productsCollection, data);
+    return { id: docRef.id, ...data };
+   // console.log("Documento escrito con ID: ", docRef.id);
+} catch (error) {
+    console.error("Error añadiendo documento: ", error);
+}           
+    
+  //  console.log(data);
    
 };  
+
+export const deleteProduct = async (id) => {
+    try {
+        const productRef = doc(productsCollection, id);
+        const snapshot = await getDoc(productRef);
+
+        if (!snapshot.exists()) {
+            // throw new Error("No Existe el Producto"); 
+            return false;
+        } 
+            await deleteDoc(productRef);
+            return true;
+
+    } catch (error) {
+        
+        console.error("Error al eliminar el documento: ", error);
+    }
+
+};
+
+export const updateProduct = async (id, data) => {
+    try {
+        const productRef = doc(productsCollection, id);
+        const snapshot = await getDoc(productRef);          
+
+
+        if (!snapshot.exists()) {
+            return null;
+        }
+        await setDoc(productRef, data, { merge: true }); // actualiza los campos especificados sin sobrescribir todo el documento
+        return { id, ...data };
+    }       
+    catch (error) {
+        console.error("Error al actualizar el documento: ", error);
+        throw error;
+    }   
+};
+
+export const updatePatchProduct = async (id, data) => {
+    try {
+        const productRef = doc(productsCollection, id);
+        const snapshot = await getDoc(productRef);          
+
+
+        if (!snapshot.exists()) {
+            return false;
+        }
+        await setDoc(productRef, data, { merge: true });
+        // actualiza los campos especificados sin sobrescribir todo el documento
+       // await updateDoc(productRef, data);  // usa updateDoc para actualizar solo los campos proporcionados
+        return { id, ...data };
+    }       
+    catch (error) {
+        console.error("Error al actualizar el documento: ", error);
+        throw error;
+    }   
+};
+
