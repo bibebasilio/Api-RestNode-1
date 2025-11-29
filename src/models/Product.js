@@ -16,20 +16,6 @@ export const getAllProducts = async () => {
     }
 };    
 
-<<<<<<< HEAD
-=======
-
-
-
-// /*export const getAllProducts = () => {
- //   return products;
-// };*/
-
-// vamos a traer desde la base de datos x su id
-/*export const getProductById = (id) => {
-    return products.find((item) => item.id == id);
-};*/
->>>>>>> 992f40682907d10b33c526e1e0a4b82d40844332
 export const getProductById = async (id) => {
     try {
         const productRef = doc(productsCollection, id); 
@@ -40,6 +26,7 @@ export const getProductById = async (id) => {
         throw error;
     }       
 };
+
 //// para filtrar productos por categoria
 export const getProductsByCategory = async (category) => {
     try {

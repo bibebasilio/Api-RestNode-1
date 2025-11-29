@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import jwt from "jsonwebtoken"; // <- ver si lo uso despues
+import jwt from "jsonwebtoken"; // - ver si lo uso despues
 
 import { createUser, findUserByEmail } from "../models/user.js";    
 
@@ -10,6 +10,7 @@ export const register = async (req, res) => {
         return res.status(422).json({ message: "Email y contrasena requeridos" });
         // Lógica para registrar un nuevo usuario
     };
+    
     const existingUser = await findUserByEmail(email); // verifico si existe el email
     if (existingUser) {
         return res.status(409).json({ message: "El email ya está registrado" });
@@ -38,14 +39,12 @@ export const login = async (req, res) => {
     if (!user) {
         return res.status(401).json({ message: "Credenciales inválidas" });
     }
-     
-    
-    
+    //////////////////////////////// valizacion contrasena
     const valid = await bcrypt.compare(password, user.password); // comparo contrasena
     if (!valid) {
         return res.status(401).json({ message: "Credenciales inválidas" });
     }
-
+////////////////////////////////// generacion token JWT
     const token = jwt.sign(  // genero el token UUID
         { userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" }  // el token dura 1 hora o lo que yo quiera
     ); 

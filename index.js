@@ -2,11 +2,19 @@ import "dotenv/config";
 
 import express from "express";
 
+import cors from "cors";
+
+
+
+//// si quiero verificar token a todos las rutas lo agrego aca y lo saco de products.router.js
+// import { verifyToken } from "./src/middlewares/verify-token.js";
+
 const app = express();
 
 // esto es un middleware para parsear json
 app.use(express.json());
 
+app.use(cors());
 // middleware de mantenimiento
 
 
@@ -27,7 +35,10 @@ app.use('/api/auth', authRouter);
 
 import productsRouter from "./src/routes/products.router.js";
 app.use('/api',productsRouter);
+//  verify token se puede aplicar a todas las rutas 
+//app.use('/api', verifyToken, productsRouter);
 
+// middleware para rutas no encontradas
 
 import notFound from "./src/middlewares/not found.js";
 app.use(notFound);

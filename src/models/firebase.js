@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 
 
 /// esto agregue
-const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyC8rtZXN4OfUQBPVOH6pmoiB6pN-gHlh7w",
   authDomain: "api-rest-node-7cd3f.firebaseapp.com",
   projectId: "api-rest-node-7cd3f",
@@ -21,19 +21,19 @@ const app = initializeApp(firebaseConfig);
 /// hasta aca */
 
 
-
-
-// Your web app's Firebase configuration
-/*const firebaseConfig = {
+// / Your web app's Firebase configuration
+/*  const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId :process.env.FIREBASE_PROYECT_ID,
-  storageBucket: process.env.FIREBASE_STRORAGE_BUCKET,
+  projectId: process.env.FIREBASE_PROYECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
-}
+};
+
+
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);*/
+const app = initializeApp(firebaseConfig); */
 
 // Initializa Firestore
 const db = getFirestore(app);
